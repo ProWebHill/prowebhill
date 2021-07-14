@@ -1,0 +1,28 @@
+version: '3.1'
+
+services:
+    db:
+        image: mariadb:10.6
+        restart: always
+        expose: 
+            - 3306
+        ports:
+            - 3306:3306
+        environment:
+            MYSQL_ROOT_PASSWORD: 12345678
+    phpmyadmin:
+        image: phpmyadmin
+        restart: always
+        ports:
+            - 8080:80
+        environment:
+            - PMA_ARBITRARY=1
+    landing:
+        build: ./
+        ports:
+            - 3000:3000
+        volumes:
+            - ./:/efiling
+            - /efiling/node_modules
+        depends_on: 
+            - db
